@@ -7,12 +7,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [14.x]
         platform:
         - os: windows-latest
           shell: bash
-        - os: windows-latest
-          shell: powershell
 
     runs-on: ${{ matrix.platform.os }}
     defaults:
@@ -33,15 +31,8 @@ jobs:
     - name: Install dependencies
       run: node . install
 
-      # Run the tests
-    - name: Run Tap tests
-      run: node . test -- -t600 -Rclassic -c
-      env:
-        DEPLOY_VERSION: testing
-
-      # Run coverage check
+      # Run test and coverage check
     - name: Run coverage report
-      if: matrix.os == 'windows-latest' && matrix.node-version == '12.x'
       run: node . test -- -t600 -Rclassic -c
       env:
         DEPLOY_VERSION: testing
